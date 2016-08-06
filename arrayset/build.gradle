@@ -1,4 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+def mVersion = '1.0.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -6,5 +10,41 @@ dependencies {
     testCompile 'org.mockito:mockito-all:1.9.5'
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+/* Bintray is used for publishing new versions to remote Maven Repo / JCenter).
+   Runs from CL: ./Gradlew bintrayUpload */
+
+bintray {
+
+    /*  This Bintray setup is for .jar / Java Module Library, not .aar.
+
+        Based on Bintray 'Configurations' Example:
+        https://github.com/bintray/bintray-examples/blob/master/gradle-bintray-plugin-examples/
+        configurations-example/build.gradle
+    */
+    version = mVersion
+    group = 'com.techdominus'
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    user = properties.getProperty('bintray.user');
+    key = properties.getProperty('bintray.apikey')
+    configurations = ['archives']
+
+    override = true;
+
+    pkg {
+        repo = 'maven'
+        name = 'arrayset'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/TechDominus/ArraySet.git'
+        publicDownloadNumbers = true
+
+        version {
+            name = mVersion
+            desc = 'First Release'
+            released  = new Date()
+            vcsTag = 'v' + mVersion
+        }
+    }
+}

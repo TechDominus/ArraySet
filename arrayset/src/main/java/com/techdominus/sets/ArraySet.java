@@ -268,7 +268,7 @@ public abstract class ArraySet<E> implements Collection<E>, Set<E> {
     /**
      * Copies Array contents into the array param.
      *
-     * @param array  The Array to be filled, if array.length < {@link #size()} a new Array will
+     * @param array  The Array to be filled, if array.length g.t {@link #size()} a new Array will
      *               be created equal to size.
      *
      * @return The contents of the backing array;
